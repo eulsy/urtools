@@ -1,0 +1,5 @@
+django-admin startproject mysite  创建项目名字为mysite
+python manage.py runserver  启动服务
+python manage.py startapp polls   创建app名字喂polls
+python manage.py migrate   初始化app相关数据库
+python manage.py makemigrations polls  加载app初始化相关模型
