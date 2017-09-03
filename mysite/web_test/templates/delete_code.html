@@ -1,0 +1,58 @@
+{% extends "template/base.html" %}
+
+{% block body %}
+<div class="jumbotron">
+    <h1>Delete it</h1>
+    <p>详细展示机器上代码所占空间，根据所需进行代码删除</p>
+</div>
+<div class="alert show_some_info " role="alert">
+</div>
+{% if dir_info %}
+    {% for k in dir_info %}
+    <div class="row">
+        <div class="alert alert-warning" role="alert"><h2>{{ k.path }}</h2></div>
+    </div>
+        {% for i in k.data %}
+            <div class="row">
+                <div class="col-sm-2">
+                    <a>{{ i.name }}</a>
+                </div>
+                <div class="col-sm-1">
+                    <a>{{ i.cu }}</a>
+                </div>
+                <div class="col-sm-6">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;width: {{ i.per }}%">
+                            {{ i.per }}%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-danger delete" value="{{ k.path }}{{sep}}{{ i.name }}">删除</button>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("button.delete").click(function(){
+            var v = $(this).val();
+            var info = $(this).parent().parent();
+            var show_info = $(".show_some_info");
+            var cf = confirm("删除 "+v);
+            if (cf == true){
+                show_info.addClass("alert-danger").text("正在删除代码请稍等");
+                Show_load()
+                $.post("/web_test/del_code",{"path":v},function(result){
+                    Close_load();
+                    show_info.removeClass("alert-danger").addClass("alert-success").text("代码删除成功");
+                    info.remove();
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

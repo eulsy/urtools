@@ -56,7 +56,7 @@ class dir_info:
 	
 	def __get_per(self):
 		for d in self.data:
-			d["per"] = "%.0f"%(d["size"]/self.total_size*100)
+			d["per"] = "%.0f"%(d["size"]/(self.total_size+1)*100)
 	
 	def __sort_data(self):
 		self.data = sorted(self.data,key=lambda x: x["size"], reverse=True )
